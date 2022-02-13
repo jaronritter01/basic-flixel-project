@@ -8,6 +8,7 @@ class PlayState extends FlxState
 	{
 		super.create();
 		var ourHero:Hero = new Hero(300, 300, "John");
+		add(ourHero);
 	}
 
 	override public function update(elapsed:Float)
