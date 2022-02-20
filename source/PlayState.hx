@@ -20,6 +20,14 @@ class PlayState extends FlxState
 
 		var screensaver = new ScreensaverHero(100, 100);
 		add(screensaver);
+		var screensaver1 = new ScreensaverHero(100, 100);
+		add(screensaver1);
+		var screensaver2 = new ScreensaverHero(100, 100);
+		add(screensaver2);
+		var screensaver3 = new ScreensaverHero(100, 100);
+		add(screensaver3);
+		var screensaver4 = new ScreensaverHero(100, 100);
+		add(screensaver4);
 	}
 
 	override public function update(elapsed:Float)
