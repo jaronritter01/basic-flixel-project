@@ -27,17 +27,30 @@ class ControllableHero extends FlxSprite
 		{
 			velocity.x = -speed;
 		}
-		else if (right)
+
+		if (right)
 		{
 			velocity.x = speed;
 		}
-		else if (up)
+
+		if (up)
 		{
 			velocity.y = -speed;
 		}
-		else if (down)
+
+		if (down)
 		{
 			velocity.y = speed;
+		}
+
+		if (down && up)
+		{
+			velocity.y = 0;
+		}
+
+		if (left && right)
+		{
+			velocity.x = 0;
 		}
 	}
 

@@ -1,13 +1,15 @@
 package;
 
 import flixel.FlxG;
-import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
 class PlayState extends FlxState
 {
+	var screensaverGroup = new FlxTypedGroup<ScreensaverHero>();
+	var wallGroup = new FlxTypedGroup<Wall>();
 	var hero:ControllableHero;
 	var wall1:Wall;
 	var wall2:Wall;
@@ -24,8 +26,8 @@ class PlayState extends FlxState
 	override public function create()
 	{
 		super.create();
-		/* var ourHero:Hero = new Hero(300, 300, "John");
-			add(ourHero); */
+		trace(FlxG.height);
+		trace(FlxG.width);
 
 		var helloWorldText = new FlxText(200, 200, -1);
 		helloWorldText.text = "Hello World!";
@@ -38,15 +40,16 @@ class PlayState extends FlxState
 
 		// Added the screen saver stuff
 		screensaver = new ScreensaverHero(10, 200);
-		add(screensaver);
 		screensaver1 = new ScreensaverHero(10, 200);
-		add(screensaver1);
 		screensaver2 = new ScreensaverHero(10, 200);
-		add(screensaver2);
 		screensaver3 = new ScreensaverHero(10, 200);
-		add(screensaver3);
 		screensaver4 = new ScreensaverHero(10, 200);
-		add(screensaver4);
+		screensaverGroup.add(screensaver);
+		screensaverGroup.add(screensaver1);
+		screensaverGroup.add(screensaver2);
+		screensaverGroup.add(screensaver3);
+		screensaverGroup.add(screensaver4);
+		add(screensaverGroup);
 
 		// added the moveable player
 		// change the last parameter to control the speed of the hero
@@ -55,36 +58,26 @@ class PlayState extends FlxState
 
 		// make some walls
 		wall1 = new Wall(100, 100);
-		add(wall1);
 		wall2 = new Wall(100, 200);
-		add(wall2);
 		wall3 = new Wall(100, 300);
-		add(wall3);
 		wall4 = new Wall(100, 400);
-		add(wall4);
+		wallGroup.add(wall1);
+		wallGroup.add(wall2);
+		wallGroup.add(wall3);
+		wallGroup.add(wall4);
+		add(wallGroup);
 	}
 
 	public function handleOverlap(hero:ControllableHero, screensaverArg:ScreensaverHero)
 	{
-		// this is probabaly not done right so if there is a better way to do this, let me know
 		score++;
-		scoreText.destroy();
-		scoreText = new FlxText(10, 10);
 		scoreText.text = "Score: " + Std.string(score);
-		add(scoreText);
 	}
 
 	override public function update(elapsed:Float)
 	{
-		FlxG.collide(hero, wall1);
-		FlxG.collide(hero, wall2);
-		FlxG.collide(hero, wall3);
-		FlxG.collide(hero, wall4);
-		FlxG.overlap(hero, screensaver, handleOverlap);
-		FlxG.overlap(hero, screensaver1, handleOverlap);
-		FlxG.overlap(hero, screensaver2, handleOverlap);
-		FlxG.overlap(hero, screensaver3, handleOverlap);
-		FlxG.overlap(hero, screensaver4, handleOverlap);
+		FlxG.collide(hero, wallGroup);
+		FlxG.overlap(hero, screensaverGroup, handleOverlap);
 		super.update(elapsed);
 	}
 }

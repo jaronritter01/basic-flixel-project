@@ -9,56 +9,53 @@ import flixel.util.FlxColor;
 class ScreensaverHero extends FlxSprite
 {
 	var randomSeed:FlxRandom;
-	var randomX:Int;
-	var randomY:Int;
+	var xDirectionIndicator:Int;
+	var yDirectionIndicator:Int;
 
 	public function new(X:Float = 0, Y:Float = 0)
 	{
 		super(X, Y);
 		this.makeGraphic(40, 20, FlxColor.BLUE, false);
-		var randomSeed:FlxRandom = new FlxRandom();
-		randomX = Std.int(randomSeed.int(-100, 100) % 2);
-		randomY = Std.int(randomSeed.int(-100, 100) % 2);
+		xDirectionIndicator = Std.int(FlxG.random.int(-1, 1));
+		yDirectionIndicator = Std.int(FlxG.random.int(-1, 1));
 
-		if (randomX == 0 && randomY == 0)
+		if (xDirectionIndicator == 0 && yDirectionIndicator == 0)
 		{
-			randomX = randomSeed.sign(50);
-			randomY = randomSeed.sign(50);
+			// now using awesome built in number generator!
+			xDirectionIndicator = FlxG.random.sign(50);
+			yDirectionIndicator = FlxG.random.sign(50);
 		}
 	}
 
 	override public function update(elapsed:Float)
 	{
-		var currentPoint:FlxPoint = getScreenPosition();
-		this.setColorTransform(randomX, randomY, randomX, 1, Std.int(currentPoint.x % 255), Std.int(currentPoint.y % 255), Std.int(currentPoint.x % 255), 1);
-		this.setPosition(currentPoint.x + randomX, currentPoint.y + randomY);
+		this.setColorTransform(xDirectionIndicator, yDirectionIndicator, xDirectionIndicator, 1, Std.int(x % 255), Std.int(y % 255), Std.int(x % 255), 1);
+		this.setPosition(x + xDirectionIndicator, y + yDirectionIndicator);
 
-		if (FlxG.keys.pressed.SPACE)
+		if (FlxG.keys.justPressed.SPACE)
 		{
-			randomX = randomX * -1;
-			randomY = randomY * -1;
+			xDirectionIndicator = -xDirectionIndicator;
+			yDirectionIndicator = -yDirectionIndicator;
 		}
 
 		// This handles the screen wrapping
-		if (!this.inWorldBounds())
+		if (y == FlxG.height + this.height)
 		{
-			if (currentPoint.y == 489)
-			{
-				this.setPosition(currentPoint.x, 0);
-			}
-			else if (currentPoint.x == 649)
-			{
-				this.setPosition(0, currentPoint.y);
-			}
-			else if (currentPoint.x == -49)
-			{
-				this.setPosition(649, currentPoint.y);
-			}
-			else if (currentPoint.y == -29)
-			{
-				this.setPosition(currentPoint.x, 489);
-			}
+			this.setPosition(x, 1 - this.height);
 		}
+		else if (x == FlxG.width + this.width)
+		{
+			this.setPosition(1 - this.width, y);
+		}
+		else if (x == 0 - this.width)
+		{
+			this.setPosition((FlxG.width + this.width) - 1, y);
+		}
+		else if (y == 0 - this.height)
+		{
+			this.setPosition(x, (FlxG.height + this.height) - 1);
+		}
+
 		super.update(elapsed);
 	}
 }
