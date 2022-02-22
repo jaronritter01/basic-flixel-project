@@ -8,7 +8,6 @@ import flixel.util.FlxColor;
 
 class ScreensaverHero extends FlxSprite
 {
-	var randomSeed:FlxRandom;
 	var xDirectionIndicator:Int;
 	var yDirectionIndicator:Int;
 
@@ -27,18 +26,8 @@ class ScreensaverHero extends FlxSprite
 		}
 	}
 
-	override public function update(elapsed:Float)
+	function screenWrapping()
 	{
-		this.setColorTransform(xDirectionIndicator, yDirectionIndicator, xDirectionIndicator, 1, Std.int(x % 255), Std.int(y % 255), Std.int(x % 255), 1);
-		this.setPosition(x + xDirectionIndicator, y + yDirectionIndicator);
-
-		if (FlxG.keys.justPressed.SPACE)
-		{
-			xDirectionIndicator = -xDirectionIndicator;
-			yDirectionIndicator = -yDirectionIndicator;
-		}
-
-		// This handles the screen wrapping
 		if (y == FlxG.height + this.height)
 		{
 			this.setPosition(x, 1 - this.height);
@@ -55,6 +44,26 @@ class ScreensaverHero extends FlxSprite
 		{
 			this.setPosition(x, (FlxG.height + this.height) - 1);
 		}
+	}
+
+	function spacePressedHandling()
+	{
+		if (FlxG.keys.justPressed.SPACE)
+		{
+			xDirectionIndicator = -xDirectionIndicator;
+			yDirectionIndicator = -yDirectionIndicator;
+		}
+	}
+
+	override public function update(elapsed:Float)
+	{
+		this.setColorTransform(xDirectionIndicator, yDirectionIndicator, xDirectionIndicator, 1, Std.int(x % 255), Std.int(y % 255), Std.int(x % 255), 1);
+		this.setPosition(x + xDirectionIndicator, y + yDirectionIndicator);
+
+		spacePressedHandling();
+
+		// This handles the screen wrapping
+		screenWrapping();
 
 		super.update(elapsed);
 	}

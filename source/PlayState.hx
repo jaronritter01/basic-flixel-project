@@ -26,8 +26,6 @@ class PlayState extends FlxState
 	override public function create()
 	{
 		super.create();
-		trace(FlxG.height);
-		trace(FlxG.width);
 
 		var helloWorldText = new FlxText(200, 200, -1);
 		helloWorldText.text = "Hello World!";
